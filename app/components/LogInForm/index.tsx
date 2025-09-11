@@ -6,6 +6,7 @@ import {UserContextType} from "@/utils/types";
 
 const LogInForm = () => {
     const [userInput, setUserInput] = useState<string>('')
+    const [passwordInput, setPasswordInput] = useState<string>('')
     const [userNotFound, setUserNotFound] = useState<boolean>(false)
     const {setUser} = useUserContext() as UserContextType;
 
@@ -15,15 +16,19 @@ const LogInForm = () => {
         const loggedInUser = UserArray.find(user => user.name === userInput) 
         
         if(!loggedInUser) {
-            setUserNotFound(false);
-        } else {
             setUserNotFound(true);
+        } else {
+            setUserNotFound(false);
             setUser(loggedInUser);
         }
     }
 
-    const handleChange = (event: {target: {value: string}}) => {
+    const handleUsernameChange = (event: {target: {value: string}}) => {
         setUserInput(event.target.value);
+    }
+
+    const handlePasswordChange = (event: {target: {value: string}}) => {
+        setPasswordInput(event.target.value);
     }
 
     return (
@@ -31,12 +36,18 @@ const LogInForm = () => {
             <form className="flex flex-col gap-8 text-center align-items-center">
                 <h2>Please Log In</h2>
                 <label htmlFor="username">Enter the username</label>
-                <input onChange={handleChange} id="username" placeholder="Username" value={userInput}/>
+                <input onChange={handleUsernameChange} id="username" placeholder="Username" value={userInput}/>
                 <label className="mb-8" htmlFor="password">Enter the password</label>
-                <input id="password" type="password" placeholder="Password" />
+                <input 
+                    onChange={handlePasswordChange} 
+                    id="password" 
+                    type="password" 
+                    placeholder="Password" 
+                    value={passwordInput}
+                />
                 <button onClick={handleClick}>Log In</button>
             </form>
-            {!userNotFound && <p>No user found with that username</p>}
+            {userNotFound && <p>No user found with that username</p>}
         </div>
     )   
 }
