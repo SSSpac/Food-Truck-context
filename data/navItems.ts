@@ -1,4 +1,4 @@
-import { NavItem } from "@/utils/types"
+import { NavItem } from "../utils/types"
 export const NavItems: NavItem[] = [
   {
     name: "Home",

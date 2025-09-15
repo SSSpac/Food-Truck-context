@@ -1,157 +1,131 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserContext } from "@/utils/contexts";
 import { UserContextType } from "@/utils/types";
-import Link from "next/link";
+import RecipeModal from './components/RecipeModel/RecipeModel';
 
-interface Recipe {
+interface FeaturedRecipe {
   idMeal: string;
   strMeal: string;
   strMealThumb: string;
+  strCategory: string;
 }
 
-export default function Home() {
+export default function HomePage() {
   const { user } = useUserContext() as UserContextType;
-  const API_ENDPOINT: string = "https://www.themealdb.com/api/json/v1/1/";
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [featuredRecipes, setFeaturedRecipes] = useState<FeaturedRecipe[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const getCategoryRecipes = async () => {
-    try {
-      const response = await fetch(`${API_ENDPOINT}filter.php?c=${user?.favoriteCategory}`);
-      const data = await response.json();
-      setRecipes(data.meals.slice(0, 3));
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const getRandomRecipes = async () => {
-    try {
-      const requests = Array(3).fill(0).map(() => 
-        fetch(`${API_ENDPOINT}random.php`).then(res => res.json())
-      );
-      
-      const results = await Promise.all(requests);
-      const randomRecipes = results.map(result => result.meals[0]);
-      setRecipes(randomRecipes);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const [selectedRecipeId, setSelectedRecipeId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    if (user?.favoriteCategory) {
-      getCategoryRecipes();
-    } else {
-      getRandomRecipes();
-    }
-  }, [user]);
+    const fetchFeaturedRecipes = async () => {
+      try {
+        const response = await fetch("https://www.themealdb.com/api/json/v1/1/search.php?s=");
+        const data = await response.json();
+        setFeaturedRecipes(data.meals.slice(0, 6));
+      } catch (error) {
+        console.error("Error fetching featured recipes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!user) {
-    return (
-      <div className="p-8">
-        <h1 className="text-3xl font-bold mb-6">Welcome to Food Trucker</h1>
-        <p className="text-lg mb-4">Discover amazing recipes from around the world!</p>
-        <div className="bg-gray-100 p-6 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">Please log in to access all features</h2>
-          <p className="mb-4">Once logged in, you can:</p>
-          <ul className="list-disc list-inside mb-4">
-            <li>Save your favorite recipes</li>
-            <li>Set your favorite food category</li>
-            <li>Browse recipes by category</li>
-          </ul>
-        </div>
-      </div>
-    );
-  }
+    fetchFeaturedRecipes();
+  }, []);
+
+  const handleViewRecipe = (recipeId: string) => {
+    setSelectedRecipeId(recipeId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedRecipeId(null);
+  };
 
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Welcome, {user.name}!</h1>
-      
-      {user.favoriteCategory ? (
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Recipes in your favorite category: {user.favoriteCategory}</h2>
-          {loading ? (
-            <p>Loading recipes...</p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {recipes.map(recipe => (
-                <div key={recipe.idMeal} className="border rounded-lg overflow-hidden shadow-md">
-                  <img src={recipe.strMealThumb} alt={recipe.strMeal} className="w-full h-48 object-cover" />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-2">{recipe.strMeal}</h3>
-                    <Link 
-                      href={`/recipe/${recipe.idMeal}`}
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-                    >
-                      View Recipe
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Popular Recipes</h2>
-          {loading ? (
-            <p>Loading recipes...</p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {recipes.map(recipe => (
-                <div key={recipe.idMeal} className="border rounded-lg overflow-hidden shadow-md">
-                  <img src={recipe.strMealThumb} alt={recipe.strMeal} className="w-full h-48 object-cover" />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-2">{recipe.strMeal}</h3>
-                    <Link 
-                      href={`/recipe/${recipe.idMeal}`}
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-                    >
-                      View Recipe
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+      <h1 className="text-3xl font-bold mb-6">Welcome to Food Trucker</h1>
+      <p className="text-lg text-gray-600 mb-8">Discover amazing recipes from around the world!</p>
+
+      {user && (
+        <div className="mb-8 p-4 bg-blue-50 rounded-lg">
+          <h2 className="text-xl font-semibold mb-2">Welcome back, {user.name}!</h2>
+          <p>You have {user.favoriteRecipes.length} saved recipes.</p>
         </div>
       )}
-      
-      <div className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4">Your Saved Recipes</h2>
-        {user.favoriteRecipes && user.favoriteRecipes.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {user.favoriteRecipes.slice(0, 3).map(recipeId => (
-              <div key={recipeId} className="border rounded-lg p-4">
-                <p className="mb-2">Recipe ID: {recipeId}</p>
-                <Link 
-                  href={`/recipe/${recipeId}`}
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-                >
-                  View Recipe
-                </Link>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold mb-6">Featured Recipes</h2>
+        
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredRecipes.map(recipe => (
+              <div key={recipe.idMeal} className="border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src={recipe.strMealThumb} 
+                  alt={recipe.strMeal} 
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold mb-2 text-gray-800">{recipe.strMeal}</h3>
+                  <p className="text-sm text-gray-600 mb-3 capitalize">{recipe.strCategory}</p>
+                  <button
+                    onClick={() => handleViewRecipe(recipe.idMeal)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition text-sm"
+                  >
+                    View Recipe
+                  </button>
+                </div>
               </div>
             ))}
           </div>
-        ) : (
-          <p>You haven't saved any recipes yet.</p>
         )}
-        {user.favoriteRecipes && user.favoriteRecipes.length > 3 && (
-          <div className="mt-4">
-            <Link href="/profile" className="text-blue-500 hover:underline">
-              View all saved recipes →
-            </Link>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold mb-6">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <a 
+            href="/categories" 
+            className="bg-green-500 text-white p-6 rounded-lg text-center hover:bg-green-600 transition"
+          >
+            <h3 className="text-xl font-semibold mb-2">Browse Categories</h3>
+            <p>Explore recipes by category</p>
+          </a>
+          
+          {user ? (
+            <a 
+              href="/profile" 
+              className="bg-blue-500 text-white p-6 rounded-lg text-center hover:bg-blue-600 transition"
+            >
+              <h3 className="text-xl font-semibold mb-2">Your Profile</h3>
+              <p>View your saved recipes</p>
+            </a>
+          ) : (
+            <div className="bg-gray-500 text-white p-6 rounded-lg text-center">
+              <h3 className="text-xl font-semibold mb-2">Log In Required</h3>
+              <p>Sign in to access your profile</p>
+            </div>
+          )}
+          
+          <div className="bg-orange-500 text-white p-6 rounded-lg text-center">
+            <h3 className="text-xl font-semibold mb-2">Popular Recipes</h3>
+            <p>See what's trending</p>
           </div>
-        )}
-      </div>
+        </div>
+      </section>
+
+      <RecipeModal
+        recipeId={selectedRecipeId || ''}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 }

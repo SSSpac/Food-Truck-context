@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import Link from "next/link";
+import RecipeModal from '../../components/RecipeModel/RecipeModel';
 
 interface Recipe {
   idMeal: string;
@@ -14,6 +14,8 @@ export default function CategoryDetailPage() {
   const category = params.category as string;
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedRecipeId, setSelectedRecipeId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -31,6 +33,16 @@ export default function CategoryDetailPage() {
     fetchRecipes();
   }, [category]);
 
+  const handleViewRecipe = (recipeId: string) => {
+    setSelectedRecipeId(recipeId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedRecipeId(null);
+  };
+
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-6">{category} Recipes</h1>
@@ -44,17 +56,23 @@ export default function CategoryDetailPage() {
               <img src={recipe.strMealThumb} alt={recipe.strMeal} className="w-full h-48 object-cover" />
               <div className="p-4">
                 <h3 className="text-lg font-semibold mb-2">{recipe.strMeal}</h3>
-                <Link 
-                  href={`/recipe/${recipe.idMeal}`}
+                <button
+                  onClick={() => handleViewRecipe(recipe.idMeal)}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
                 >
                   View Recipe
-                </Link>
+                </button>
               </div>
             </div>
           ))}
         </div>
       )}
+
+      <RecipeModal
+        recipeId={selectedRecipeId || ''}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 }

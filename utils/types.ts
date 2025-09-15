@@ -1,17 +1,17 @@
-export interface UserType {
+export interface User {
     id: string;
     name: string;
-    email?: string;
-    favoriteCategory: string | null;
+    email: string;
+    favoriteCategory: string;
     favoriteRecipes: string[];
 }
 
 export interface UserContextType {
-    user: UserType | null;
-    setUser: (user: UserType | null) => void;
+    user: User | null;
+    setUser: (user: User | null) => void;
 }
 
 export interface NavItem {
-    name: string;
-    link: string;
+  name: string;
+  link: string;
 }
