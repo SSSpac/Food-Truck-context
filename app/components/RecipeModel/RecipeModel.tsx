@@ -89,7 +89,7 @@ export default function RecipeModal({ recipeId, isOpen, onClose }: RecipeModalPr
       <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-start mb-4">
-            <h2 className="text-2xl font-bold">
+            <h2 className="text-black text-2xl font-bold">
               {loading ? "Loading..." : recipe?.strMeal}
             </h2>
             <button
@@ -105,16 +105,16 @@ export default function RecipeModal({ recipeId, isOpen, onClose }: RecipeModalPr
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
             </div>
           ) : recipe ? (
-            <div className="flex flex-col md:flex-row gap-6">
+            <div className="text-black flex flex-col md:flex-row gap-6">
               <div className="md:w-1/2">
                 <img 
                   src={recipe.strMealThumb} 
                   alt={recipe.strMeal} 
-                  className="w-full rounded-lg shadow-md"
+                  className="text-black w-full rounded-lg shadow-md"
                 />
                 
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2">Details</h3>
+                <div className="text-black mt-4">
+                  <h3 className="text-black text-lg font-semibold mb-2">Details</h3>
                   <p><strong>Category:</strong> {recipe.strCategory}</p>
                   <p><strong>Cuisine:</strong> {recipe.strArea}</p>
                   
@@ -133,8 +133,8 @@ export default function RecipeModal({ recipeId, isOpen, onClose }: RecipeModalPr
               
               <div className="md:w-1/2">
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold mb-2">Ingredients</h3>
-                  <ul className="list-disc list-inside pl-4">
+                  <h3 className="text-black text-lg font-semibold mb-2">Ingredients</h3>
+                  <ul className="text-black list-disc list-inside pl-4">
                     {ingredients.map((item, index) => (
                       <li key={index} className="mb-1">
                         <strong>{item.measure}</strong> {item.ingredient}
@@ -144,8 +144,8 @@ export default function RecipeModal({ recipeId, isOpen, onClose }: RecipeModalPr
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Instructions</h3>
-                  <div className="whitespace-pre-line text-sm">
+                  <h3 className="text-black text-lg font-semibold mb-2">Instructions</h3>
+                  <div className="text-black whitespace-pre-line text-sm">
                     {recipe.strInstructions}
                   </div>
                 </div>

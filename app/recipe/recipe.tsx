@@ -81,7 +81,6 @@ export default function RecipePage() {
     );
   }
 
-  // Get ingredients and measurements
   const ingredients = [];
   for (let i = 1; i <= 20; i++) {
     const ingredient = recipe[`strIngredient${i}` as keyof Recipe];
@@ -117,7 +116,7 @@ export default function RecipePage() {
           />
           
           <div className="mt-6">
-            <h2 className="text-xl font-semibold mb-3">Details</h2>
+            <h2 className=" text-xl font-semibold mb-3">Details</h2>
             <p><strong>Category:</strong> {recipe.strCategory}</p>
             <p><strong>Cuisine:</strong> {recipe.strArea}</p>
             
@@ -136,7 +135,7 @@ export default function RecipePage() {
           </div>
         </div>
         
-        <div className="md:w-1/2">
+        <div className="text-black md:w-1/2">
           <div className="mb-6">
             <h2 className="text-xl font-semibold mb-3">Ingredients</h2>
             <ul className="list-disc list-inside">
@@ -149,8 +148,8 @@ export default function RecipePage() {
           </div>
           
           <div>
-            <h2 className="text-xl font-semibold mb-3">Instructions</h2>
-            <div className="whitespace-pre-line">{recipe.strInstructions}</div>
+            <h2 className="text-black text-xl font-semibold mb-3">Instructions</h2>
+            <div className="text-blackwhitespace-pre-line">{recipe.strInstructions}</div>
           </div>
         </div>
       </div>

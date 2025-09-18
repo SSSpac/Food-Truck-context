@@ -1,4 +1,4 @@
-'use client'
+ 'use client'
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useUserContext } from "@/utils/contexts";
@@ -52,8 +52,8 @@ export default function CategoriesPage() {
       <h1 className="text-3xl font-bold mb-6">Recipe Categories</h1>
       
       {user.favoriteCategory && (
-        <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-          <p className="font-semibold">Your favorite category: {user.favoriteCategory}</p>
+        <div className="text-black mb-6 p-4 bg-blue-50 rounded-lg">
+          <p className="text-blackfont-semibold">Your favorite category: {user.favoriteCategory}</p>
           <button 
             onClick={() => setFavoriteCategory("")}
             className="mt-2 text-sm text-blue-500 hover:underline"
@@ -81,8 +81,8 @@ export default function CategoriesPage() {
                   onClick={() => setFavoriteCategory(category.strCategory)}
                   className={`px-3 py-1 rounded text-sm ${
                     user.favoriteCategory === category.strCategory 
-                      ? "bg-green-500 text-white" 
-                      : "bg-gray-200 hover:bg-gray-300"
+                      ? "text-black bg-green-500 text-white" 
+                      : "text-black bg-white hover:bg-gray-300"
                   }`}
                 >
                   {user.favoriteCategory === category.strCategory ? "Favorite" : "Set as Favorite"}
@@ -95,3 +95,4 @@ export default function CategoriesPage() {
     </div>
   );
 }
+  

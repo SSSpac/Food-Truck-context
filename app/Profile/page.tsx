@@ -68,7 +68,7 @@ export default function ProfilePage() {
       <h1 className="text-3xl font-bold mb-8">Your Profile</h1>
       
       <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Personal Information</h2>
+        <h2 className="text-black text-2xl font-semibold mb-4">Personal Information</h2>
         <div className="space-y-3">
           <p className="text-lg"><span className="font-semibold text-gray-700">Name:</span> {user.name}</p>
           <p className="text-lg"><span className="font-semibold text-gray-700">Email:</span> {user.email}</p>
@@ -89,8 +89,8 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Your Saved Recipes</h2>
+      <div className="text-black bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-black text-2xl font-semibold mb-6">Your Saved Recipes</h2>
         
         {loading ? (
           <div className="flex justify-center items-center py-12">

@@ -32,20 +32,21 @@ const LogInForm = () => {
     }
 
     return (
-        <div className="m-auto p-3 mt-4 border border-gray-500 rounded-lg shadow-lg">
-            <form className="flex flex-col gap-8 text-center align-items-center">
-                <h2>Please Log In</h2>
-                <label htmlFor="username">Enter the username</label>
-                <input onChange={handleUsernameChange} id="username" placeholder="Username" value={userInput}/>
-                <label className="mb-8" htmlFor="password">Enter the password</label>
+        <div className="m-5 p-3  border border-black rounded-lg shadow-lg pt-10">
+            <form className="bg-blue-400 flex flex-col gap-10 text-center align-items-center">
+                <h2 className="text-black text-black text-bold">Please Log In First</h2>
+                <label htmlFor="username" className="text-black ">Enter the username "Bobbe" or "Tobbe"</label>
+                <input onChange={handleUsernameChange} id="username" placeholder="Username" value={userInput}className="border"/>
+                <label className="mb-8 text-align-center text-black" htmlFor="password">Enter the password "1"</label>
                 <input 
                     onChange={handlePasswordChange} 
                     id="password" 
                     type="password" 
                     placeholder="Password" 
                     value={passwordInput}
+                    className="border "
                 />
-                <button onClick={handleClick}>Log In</button>
+                <button onClick={handleClick} className="bg-black text-white rounded p-2">Log In</button>
             </form>
             {userNotFound && <p>No user found with that username</p>}
         </div>
