@@ -4,6 +4,8 @@ import {useState} from "react";
 import {useUserContext} from "@/utils/contexts";
 import {UserContextType} from "@/utils/types";
 
+
+
 const LogInForm = () => {
     const [userInput, setUserInput] = useState<string>('')
     const [passwordInput, setPasswordInput] = useState<string>('')

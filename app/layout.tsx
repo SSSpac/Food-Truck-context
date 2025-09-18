@@ -14,8 +14,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <UserContextProvider>
+                      <Header />
+
           <LogInWrapper>
-            <Header />
             <Navigation />
             <main>{children}</main>
           </LogInWrapper>
