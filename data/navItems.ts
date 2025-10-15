@@ -10,6 +10,6 @@ export const NavItems: NavItem[] = [
   },
   {
     name: "Profile",
-    link: "/Profile"
+    link: "/profile"
   }
 ]
